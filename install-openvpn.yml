@@ -9,5 +9,5 @@
 
     - name: Install OpenVPN Connect using Chocolatey
       win_chocolatey:
-        name: OpenVPN Connect
+        name: openvpn
         state: present
