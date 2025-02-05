@@ -1,0 +1,14 @@
+---
+- name: Install OpenVPN Connect v3.6.0 on Windows
+  hosts: windows
+  gather_facts: yes
+  become: true  # Run as administrator
+  tasks:
+    - name: Ensure Chocolatey is installed
+      win_chocolatey_facts:
+
+    - name: Install OpenVPN Connect v3.6.0 using Chocolatey
+      win_chocolatey:
+        name: openvpnconnect
+        version: "3.6.0"
+        state: present
