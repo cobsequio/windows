@@ -1,0 +1,9 @@
+---
+- name: Install WinRAR on Windows 11
+  hosts: windows  # The target host/group in your inventory
+  become: true    # Run as administrator
+  tasks:
+    - name: Install WinRAR via Chocolatey
+      win_chocolatey:
+        name: winrar
+        state: present
