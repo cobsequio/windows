@@ -1,0 +1,15 @@
+---
+- name: Run Windows Update on Windows machine
+  hosts: windows  # The target host/group in your inventory
+  gather_facts: false  # We don't need to gather facts for this task
+  tasks:
+    - name: Run Windows Update
+      win_updates:
+        category_names:
+          - SecurityUpdates  # You can specify other categories like "CriticalUpdates" or "Updates"
+        state: installed     # Ensure updates are installed
+      register: update_result
+
+    - name: Display result of Windows Update
+      debug:
+        msg: "Windows Update Result: {{ update_result }}"
