@@ -1,0 +1,11 @@
+---
+- name: Install Bitwarden for Google Chrome on Windows 11
+  hosts: windows
+  gather_facts: yes
+  become: true
+  tasks:
+    - name: Install Google Chrome version 113.0.5672.126 via Chocolatey
+      win_chocolatey:
+        name: googlechrome
+        version: 113.0.5672.126
+        state: present
