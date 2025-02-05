@@ -1,5 +1,5 @@
 ---
-- name: Ensure Skype is up-to-date using Chocolatey on Windows 11
+- name: Install or update Skype using Chocolatey on Windows 11
   hosts: windows
   gather_facts: yes
   become: true  # Ensure we run as an administrator
@@ -7,7 +7,13 @@
     - name: Ensure Chocolatey is installed
       win_chocolatey_facts:
 
-    - name: Install or update Skype to the latest version using Chocolatey
-      win_chocolatey:
-        name: skype
-        state: latest
+    - name: Install Skype manually using custom URL
+      win_get_url:
+        url: https://go.skype.com/skype.download/Skype-8.136.0.202.msi
+        dest: C:\Temp\Skype-Installer.msi
+
+    - name: Install Skype from MSI
+      win_package:
+        path: C:\Temp\Skype-Installer.msi
+        state: present
+        product_id: 'Skype'
