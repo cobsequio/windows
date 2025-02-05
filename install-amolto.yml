@@ -1,13 +1,12 @@
----
-- name: Install Amolto via Chocolatey on Windows 11
+- name: Install Amolto manually on Windows 11
   hosts: windows
   gather_facts: yes
-  become: true  # Ensure we run as an administrator
+  become: true
   tasks:
-    - name: Ensure Chocolatey is installed
-      win_chocolatey_facts:
+    - name: Download Amolto installer
+      win_get_url:
+        url: "https://www.amolto.com/downloads/Amolto_Call_Recorder_Setup.exe"
+        dest: "C:\\temp\\Amolto_Call_Recorder_Setup.exe"
 
-    - name: Install Amolto via Chocolatey
-      win_chocolatey:
-        name: amolto
-        state: present
+    - name: Install Amolto
+      win_command: "C:\\temp\\Amolto_Call_Recorder_Setup.exe /silent"
