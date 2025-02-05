@@ -1,0 +1,12 @@
+---
+- name: Install VLC on Windows 11
+  hosts: windows  # The target host/group in your inventory
+  become: true    # Use privilege escalation (run as administrator)
+  tasks:
+    - name: Install Chocolatey
+      win_chocolatey_facts:
+
+    - name: Install VLC via Chocolatey
+      win_chocolatey:
+        name: vlc
+        state: present
