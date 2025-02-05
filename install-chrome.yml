@@ -1,10 +1,13 @@
 ---
-- name: Install Google Chrome on Windows 11
+- name: Install Google Chrome using Chocolatey on Windows 11
   hosts: windows
   gather_facts: yes
-  become: true
+  become: true  # Ensure we run as an administrator
   tasks:
-    - name: Install Google Chrome via Chocolatey
+    - name: Ensure Chocolatey is installed
+      win_chocolatey_facts:
+
+    - name: Install Google Chrome using Chocolatey
       win_chocolatey:
         name: googlechrome
         state: present
