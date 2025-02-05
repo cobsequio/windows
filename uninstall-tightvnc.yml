@@ -1,0 +1,12 @@
+---
+- name: Uninstall TightVNC using Chocolatey
+  hosts: windows
+  gather_facts: yes
+  tasks:
+    - name: Ensure Chocolatey is installed
+      win_chocolatey_facts:
+
+    - name: Uninstall TightVNC using Chocolatey
+      win_chocolatey:
+        name: tightvnc
+        state: absent
