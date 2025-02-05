@@ -1,3 +1,4 @@
+---
 - name: Install Amolto manually on Windows 11
   hosts: windows
   gather_facts: yes
@@ -5,8 +6,8 @@
   tasks:
     - name: Download Amolto installer
       win_get_url:
-        url: "https://www.amolto.com/downloads/Amolto_Call_Recorder_Setup.exe"
-        dest: "C:\\temp\\Amolto_Call_Recorder_Setup.exe"
+        url: "https://amolto.com/files/AmoltoCallRecorder.msi"
+        dest: "C:\\temp\\AmoltoCallRecorder.msi"
 
-    - name: Install Amolto
-      win_command: "C:\\temp\\Amolto_Call_Recorder_Setup.exe /silent"
+    - name: Install Amolto using msiexec
+      win_command: "msiexec /i C:\\temp\\AmoltoCallRecorder.msi /quiet /norestart"
