@@ -1,0 +1,12 @@
+- name: Install Adobe Acrobat Reader DC using Chocolatey on Windows 11
+  hosts: windows
+  gather_facts: yes
+  become: true  # Ensure we run as an administrator
+  tasks:
+    - name: Ensure Chocolatey is installed
+      win_chocolatey_facts:
+
+    - name: Install Adobe Acrobat Reader DC using Chocolatey
+      win_chocolatey:
+        name: adobereader
+        state: present
