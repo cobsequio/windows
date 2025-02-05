@@ -1,0 +1,42 @@
+---
+- name: Collect system data from Windows 11
+  hosts: windows  # The target host/group in your inventory
+  gather_facts: false  # Skip Ansible's default fact gathering since we're custom collecting data
+  tasks:
+    - name: Collect CPU usage
+      win_command: powershell -Command "Get-WmiObject -Class Win32_Processor | Select-Object -ExpandProperty LoadPercentage"
+      register: cpu_usage
+
+    - name: Display formatted CPU usage
+      debug:
+        msg: "CPU Usage: {{ cpu_usage.stdout | trim }}%"
+
+    - name: Collect memory usage
+      win_command: powershell -Command "Get-WmiObject -Class Win32_OperatingSystem | Select-Object @{Name='MemoryUsed';Expression={[math]::round($_.TotalVisibleMemorySize - $_.FreePhysicalMemory, 2)}}"
+      register: memory_usage
+
+    - name: Display formatted memory usage
+      debug:
+        msg: "Memory Usage (MB): {{ memory_usage.stdout | trim }} MB"
+
+    - name: Collect disk space usage
+      win_command: powershell -Command "Get-WmiObject -Class Win32_LogicalDisk | Where-Object { $_.DriveType -eq 3 } | Select-Object DeviceID, @{Name='SizeGB';Expression={[math]::round($_.Size/1GB, 2)}}, @{Name='FreeSpaceGB';Expression={[math]::round($_.FreeSpace/1GB, 2)}}"
+      register: disk_space
+
+    - name: Display formatted disk space usage
+      debug:
+        msg: |
+          {% for disk in disk_space.stdout_lines %}
+            {{ disk | trim }}
+          {% endfor %}
+
+    - name: Collect Windows event logs (e.g., System logs)
+      win_command: powershell -Command "Get-WinEvent -LogName System -MaxEvents 5 | Select-Object TimeCreated, Message"
+      register: event_logs
+
+    - name: Display formatted event logs
+      debug:
+        msg: |
+          {% for event in event_logs.stdout_lines %}
+            {{ event | trim }}
+          {% endfor %}
