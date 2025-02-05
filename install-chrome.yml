@@ -1,8 +1,8 @@
 ---
-- name: Install Google Chrome using Chocolatey on Windows 11
+- name: Install Google Chrome and Bitwarden extension for Chrome
   hosts: windows
   gather_facts: yes
-  become: true  # Ensure we run as an administrator
+  become: true  # Run as administrator
   tasks:
     - name: Ensure Chocolatey is installed
       win_chocolatey_facts:
@@ -10,4 +10,9 @@
     - name: Install Google Chrome using Chocolatey
       win_chocolatey:
         name: googlechrome
+        state: present
+
+    - name: Install Bitwarden for Chrome via Chocolatey
+      win_chocolatey:
+        name: bitwarden-chrome
         state: present
