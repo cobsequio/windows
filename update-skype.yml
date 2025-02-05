@@ -1,0 +1,13 @@
+---
+- name: Ensure Skype is up-to-date using Chocolatey on Windows 11
+  hosts: windows
+  gather_facts: yes
+  become: true  # Ensure we run as an administrator
+  tasks:
+    - name: Ensure Chocolatey is installed
+      win_chocolatey_facts:
+
+    - name: Install or update Skype to the latest version using Chocolatey
+      win_chocolatey:
+        name: skype
+        state: latest
