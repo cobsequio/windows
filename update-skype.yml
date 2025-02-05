@@ -9,7 +9,7 @@
 
     - name: Install Skype manually using custom URL
       win_get_url:
-        url: https://go.skype.com/skype.download/Skype-8.136.0.202.msi
+        url: https://download.skype.com/s4l/download/win/Skype-8.136.0.202.msi
         dest: C:\Temp\Skype-Installer.msi
 
     - name: Install Skype from MSI
