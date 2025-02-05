@@ -1,9 +1,13 @@
 ---
-- name: Uninstall WinRAR on Windows 11
-  hosts: windows  # The target host/group in your inventory
-  become: true    # Run as administrator
+- name: Uninstall WinRAR using Chocolatey on Windows 11
+  hosts: windows
+  gather_facts: yes
+  become: true  # Ensure we run as an administrator
   tasks:
-    - name: Uninstall WinRAR via Chocolatey
+    - name: Ensure Chocolatey is installed
+      win_chocolatey_facts:
+
+    - name: Uninstall WinRAR using Chocolatey
       win_chocolatey:
         name: winrar
         state: absent
