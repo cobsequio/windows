@@ -1,0 +1,12 @@
+---
+- name: Run gpupdate on Windows machine
+  hosts: windows  # The target host/group in your inventory
+  gather_facts: false  # We don't need facts for this task
+  tasks:
+    - name: Run gpupdate to refresh Group Policy
+      win_command: gpupdate /force
+      register: gpupdate_result
+
+    - name: Display result of gpupdate
+      debug:
+        msg: "Gpupdate result: {{ gpupdate_result.stdout }}"
