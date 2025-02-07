@@ -3,7 +3,7 @@
   hosts: windows
   gather_facts: no
   tasks:
-
+    
     - name: Check disk health status
       win_shell: |
         Get-PhysicalDisk | Select-Object DeviceID, MediaType, OperationalStatus, HealthStatus | ConvertTo-Json
@@ -11,7 +11,7 @@
 
     - name: Ensure disk health data is a list
       set_fact:
-        disks: "{{ disk_health.stdout | from_json | default([]) | community.general.json_query('[*]') }}"
+        disks: "{{ [disk_health.stdout | from_json] if (disk_health.stdout | from_json) is mapping else disk_health.stdout | from_json }}"
 
     - name: Display disk health status
       ansible.builtin.debug:
