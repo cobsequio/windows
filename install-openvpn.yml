@@ -1,13 +1,21 @@
 ---
-- name: Install OpenVPN Connect using Chocolatey on Windows 11
-  hosts: windows
-  gather_facts: yes
-  become: true  # Ensure we run as an administrator
+- name: Install OpenVPN Connect on Windows
+  hosts: windows_clients
+  gather_facts: no
   tasks:
-    - name: Ensure Chocolatey is installed
-      win_chocolatey_facts:
 
-    - name: Install OpenVPN Connect using Chocolatey
-      win_chocolatey:
-        name: openvpn
-        state: present
+    - name: Download OpenVPN Connect installer
+      win_get_url:
+        url: https://swupdate.openvpn.net/downloads/OpenVPN-Connect-v3-windows.msi
+        dest: C:\Temp\OpenVPN-Connect.msi
+
+    - name: Install OpenVPN Connect
+      win_shell: |
+        msiexec /i C:\Temp\OpenVPN-Connect.msi /quiet /norestart
+      args:
+        executable: powershell
+
+    - name: Remove OpenVPN Connect installer
+      win_file:
+        path: C:\Temp\OpenVPN-Connect.msi
+        state: absent
