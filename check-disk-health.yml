@@ -9,7 +9,11 @@
         Get-PhysicalDisk | Select-Object DeviceID, MediaType, OperationalStatus, HealthStatus | ConvertTo-Json
       register: disk_health
 
+    - name: Ensure disk health data is a list
+      set_fact:
+        disks: "{{ disk_health.stdout | from_json | default([]) | community.general.json_query('[*]') }}"
+
     - name: Display disk health status
       ansible.builtin.debug:
         msg: "{{ item.DeviceID }} - MediaType: {{ item.MediaType }}, OperationalStatus: {{ item.OperationalStatus }}, HealthStatus: {{ item.HealthStatus }}"
-      loop: "{{ disk_health.stdout | from_json }}"
+      loop: "{{ disks }}"
