@@ -1,6 +1,6 @@
 ---
 - name: Check Windows Server Specs
-  hosts: windows_servers
+  hosts: LT-433
   gather_facts: yes
   tasks:
 
