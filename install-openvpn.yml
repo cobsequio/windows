@@ -1,6 +1,6 @@
 ---
 - name: Install OpenVPN Connect on Windows
-  hosts: windows_clients
+  hosts: windows
   gather_facts: no
   tasks:
 
