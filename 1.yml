@@ -1,11 +1,8 @@
 ---
 - name: Check Windows Server Specs
   hosts: windows_servers
-  gather_facts: no
+  gather_facts: yes
   tasks:
-    
-    - name: Gather facts about the Windows system
-      ansible.windows.setup:
 
     - name: Display Hostname
       ansible.builtin.debug:
