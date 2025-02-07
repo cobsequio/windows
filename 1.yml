@@ -24,16 +24,16 @@
 
     - name: Check disk usage
       win_shell: |
-        Get-PSDrive -PSProvider FileSystem | Select-Object Used,Free,@{Name='PercentUsed';Expression={[math]::round(($_.Used/($_.Used+$_Free))*100,2)}}
+        Get-PSDrive -PSProvider FileSystem | Select-Object Name,Used,Free,@{Name='PercentUsed';Expression={[math]::round(($_.Used/($_.Used+$_Free))*100,2)}}
       register: disk_usage
 
     - name: Show disk usage
       ansible.builtin.debug:
-        msg: "{{ item.MountRoot }}: {{ item.PercentUsed }}% used"
+        msg: "{{ item.Name }}: {{ item.PercentUsed }}% used"
       loop: "{{ disk_usage.stdout_lines }}"
       vars:
-        mount_root_index: 0
-        percent_used_index: 2
+        name_index: 0
+        percent_used_index: 3
       when: item != ""
 
     - name: Check CPU architecture
