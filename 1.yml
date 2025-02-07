@@ -13,16 +13,18 @@
         var: ansible_distribution_version
 
     - name: Check total physical memory
-      win_command: |
-        Get-WmiObject -Class Win32_ComputerSystem | Select-Object TotalPhysicalMemory
+      win_shell: |
+        $totalMemory = Get-WmiObject -Class Win32_ComputerSystem | Select-Object -ExpandProperty TotalPhysicalMemory
+        Write-Output $totalMemory
       register: memory_info
 
     - name: Show total physical memory
       ansible.builtin.debug:
-        msg: "Total Physical Memory: {{ (memory_info.stdout.split()[-1]|int / (1024*1024) ) | round(2) }} MB"
+        msg: "Total Physical Memory: {{ (memory_info.stdout|int / (1024*1024) ) | round(2) }} MB"
 
     - name: Check disk usage
-      win_shell: Get-PSDrive -PSProvider FileSystem | Select-Object Used,Free,@{Name='PercentUsed';Expression={[math]::round(($_.Used/$_.Used+$_Free)*100,2)}}
+      win_shell: |
+        Get-PSDrive -PSProvider FileSystem | Select-Object Used,Free,@{Name='PercentUsed';Expression={[math]::round(($_.Used/($_.Used+$_Free))*100,2)}}
       register: disk_usage
 
     - name: Show disk usage
@@ -35,8 +37,9 @@
       when: item != ""
 
     - name: Check CPU architecture
-      win_command: |
-        Get-WmiObject Win32_Processor | Select-Object -ExpandProperty Architecture
+      win_shell: |
+        $arch = Get-WmiObject Win32_Processor | Select-Object -ExpandProperty Architecture
+        Write-Output $arch
       register: cpu_architecture
 
     - name: Show CPU architecture
