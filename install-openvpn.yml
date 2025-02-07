@@ -6,7 +6,7 @@
 
     - name: Download OpenVPN Connect installer
       win_get_url:
-        url: https://swupdate.openvpn.net/downloads/OpenVPN-Connect-v3-windows.msi
+        url: YOUR_CORRECT_URL_HERE
         dest: C:\Temp\OpenVPN-Connect.msi
 
     - name: Install OpenVPN Connect
