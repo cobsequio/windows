@@ -1,0 +1,15 @@
+---
+- name: Check Disk Health on Windows PCs
+  hosts: windows
+  gather_facts: no
+  tasks:
+
+    - name: Check disk health status
+      win_shell: |
+        Get-PhysicalDisk | Select-Object DeviceID, MediaType, OperationalStatus, HealthStatus | ConvertTo-Json
+      register: disk_health
+
+    - name: Display disk health status
+      ansible.builtin.debug:
+        msg: "{{ item.DeviceID }} - MediaType: {{ item.MediaType }}, OperationalStatus: {{ item.OperationalStatus }}, HealthStatus: {{ item.HealthStatus }}"
+      loop: "{{ disk_health.stdout | from_json }}"
